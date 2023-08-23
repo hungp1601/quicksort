@@ -1,13 +1,75 @@
 <!DOCTYPE html>
 <html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<style>
+  #main {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    margin-top: 100px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ele {
+    border: 1px solid black;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pivot {
+    background: red;
+  }
+
+  .swap {
+    background: green;
+  }
+
+  .partition {
+    height: 40px;
+    width: 2px;
+    background: blue;
+  }
+</style>
+
 <body>
 
-<canvas id="myChart" style="width:100%;max-width:800px"></canvas>
+  <div>
+    <div id="main"></div>
+  
+  
+    <div>
+      <hr>
+      <div>
+        input your file:
+      </div>
+      <input type="file" id="fileInput">
+    </div>
+  
+    <div>
+      <button id="exportButton">Export this array</button>
+    </div>
+  
+    <div>
+      <div>generate random array (input array size)</div>
+      <input type="text" name="" id="arraySize">
+      <button id="randomBtn">random</button>
+    </div>
 
-<script type="module" src="index.js">
+    <div>
+      <button id="sortArr">Sort array</button>
+    </div>
+
+  </div>
+  <script type="module" src="index.js">
+
 
 </script>
 
 </body>
+
 </html>

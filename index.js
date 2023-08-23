@@ -1,19 +1,14 @@
 import { randomArray, renderChart,convertNormalArray,generateArray } from "./chart.js";
 
-let array =randomArray(5);
-
-console.log(array);
-
-// renderChart(array);
+let array = [];
 
 
 
-
-async function swap(arr, i, j) {
-
+async function swap(arr, i, j, left, right) {
+  console.log(i,j);
   arr[i].isSwap = true;
   arr[j].isSwap = true;
-  await renderChart(arr);
+  await renderChart(arr,left, right);
 
   const temp = arr[i];
 
@@ -22,7 +17,7 @@ async function swap(arr, i, j) {
 
   arr[i].isSwap = false;
   arr[j].isSwap = false;
-  await renderChart(arr);
+  await renderChart(arr,left,right);
 
 }
 
@@ -32,17 +27,11 @@ async function animateQuicksort(arr, left, right) {
     const pivotIndex = await animatePartition(arr, left, right);
     await animateQuicksort(arr, left, pivotIndex - 1);
 
-
-
     await animateQuicksort(arr, pivotIndex + 1, right);
   }
 }
 
 async function animatePartition(arr, left, right) {
-
-  arr[right].isPivot = true;
-  await renderChart(arr);
-
   const pivotValue = arr[right].value;
   let partitionIndex = left;
 
@@ -50,22 +39,94 @@ async function animatePartition(arr, left, right) {
 
   for (let i = left; i < right; i++) {
     if (arr[i].value < pivotValue) {
-      await swap(arr, i, partitionIndex);
+      await swap(arr, i, partitionIndex,left,right);
       partitionIndex++;
     }
   }
 
-  
-
   await swap(arr, partitionIndex, right);
-  arr[right].isPivot = false;
-  arr[partitionIndex].isPivot = false;
 
-  await renderChart(arr);
+
+  // await renderChart(arr,-1, -1);
 
 
   return partitionIndex;
 }
 
 
-animateQuicksort(array, 0, array.length - 1);
+const arraySize = document.querySelector('#arraySize')
+const randomBtn = document.querySelector('#randomBtn')
+const sortArr = document.querySelector('#sortArr')
+
+console.log(array);
+
+function randomize(){
+  array = randomArray(arraySize.value)
+  console.log(arraySize.value)
+  renderChart(array)
+}
+
+async function sortArray(){
+  await animateQuicksort(array, 0, array.length - 1)
+}
+
+randomBtn.addEventListener("click", randomize);
+
+sortArr.addEventListener("click", sortArray);
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const fileInput = document.getElementById("fileInput");
+
+  fileInput.addEventListener("change", event => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = event => {
+        const content = event.target.result;
+        array = generateArray(content.split(" "));
+        
+        console.log(array)
+        renderChart(array);
+      };
+
+      reader.readAsText(file);
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  // const inputStringElement = document.getElementById("inputString");
+  const exportButton = document.getElementById("exportButton");
+
+  exportButton.addEventListener("click", () => {
+    const inputString = convertNormalArray(array).join(' ');;
+    // console.log()
+    if (inputString) {
+      downloadStringAsFile(inputString, "output.txt");
+    }
+  });
+});
+
+function downloadStringAsFile(text, filename) {
+  const blob = new Blob([text], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
+
+
+
+
+// array = randomArray(5)
+// animateQuicksort(array, 0, array.length - 1)
+// console.log(array)
+
