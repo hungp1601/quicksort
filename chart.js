@@ -10,7 +10,7 @@ export function randomArray (arraySize, maxValue = 20) {
     const value = Math.floor(Math.random() * maxValue) + 1
 
 
-    tmp.push({ index, value, isPivot: false, isSwap: false });
+    tmp.push({ index, value, isPivot: false, isSwap: false, isCompare:false  });
   }
   return tmp;
 }
@@ -21,7 +21,7 @@ export function generateArray (arr) {
     const index = i + 1;
     const value = arr[i]
 
-    tmp.push({ index, value, isPivot: false, isSwap: false });
+    tmp.push({ index, value, isPivot: false, isSwap: false, isCompare:false });
   }
   return tmp;
 }
@@ -33,8 +33,6 @@ export function convertNormalArray (arr) {
 
 
 export async function renderChart (arr, left, right) {
-  const indexs = arr.map((ele) => ele.index);
-  const values = arr.map((ele) => ele.value);
 
   let str = ''
 
@@ -49,6 +47,13 @@ export async function renderChart (arr, left, right) {
     if(arr[i].isPivot){
       str += `
       <div class='ele pivot'>
+      ${arr[i].value}
+      </div>
+      `
+    }
+    else if(arr[i].isCompare){
+      str += `
+      <div class='ele compare'>
       ${arr[i].value}
       </div>
       `
@@ -91,6 +96,6 @@ export async function renderChart (arr, left, right) {
 
 
 
-function sleep (ms) {
+function sleep () {
   return new Promise(resolve => setTimeout(resolve, 2000));
 }

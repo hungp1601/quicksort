@@ -46,6 +46,10 @@ async function animatePartition (arr, left, right) {
   const pivotValue = arr[right].value;
   let partitionIndex = left;
 
+  arr[right].isCompare = true;
+
+  // await renderChart(arr, left, right);
+
   //swap smaller than pivot to left, greater to right
 
   for (let i = left; i < right; i++) {
@@ -60,6 +64,8 @@ async function animatePartition (arr, left, right) {
       await renderChart(arr, left, right);
     }
   }
+  arr[right].isCompare = false;
+
   await swap(arr, partitionIndex, right);
 
   return partitionIndex;
