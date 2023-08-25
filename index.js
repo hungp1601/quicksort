@@ -5,6 +5,7 @@ let array = [];
 
 
 async function swap(arr, i, j, left, right) {
+  // if(i ===j ) return
   console.log(i,j);
   arr[i].isSwap = true;
   arr[j].isSwap = true;
@@ -25,13 +26,23 @@ async function swap(arr, i, j, left, right) {
 async function animateQuicksort(arr, left, right) {
   if (left < right) {
     const pivotIndex = await animatePartition(arr, left, right);
+    arr[pivotIndex].isPivot = true;
+    await renderChart(arr,left,right);
+
+
     await animateQuicksort(arr, left, pivotIndex - 1);
 
     await animateQuicksort(arr, pivotIndex + 1, right);
+    
+
+    arr[pivotIndex].isPivot = false;
+
+
+    await renderChart(arr,left,right);
   }
 }
 
-async function animatePartition(arr, left, right) {
+async function animatePartition (arr, left, right) {
   const pivotValue = arr[right].value;
   let partitionIndex = left;
 
@@ -39,26 +50,27 @@ async function animatePartition(arr, left, right) {
 
   for (let i = left; i < right; i++) {
     if (arr[i].value < pivotValue) {
-      await swap(arr, i, partitionIndex,left,right);
+      await swap(arr, i, partitionIndex, left, right);
       partitionIndex++;
+
+      arr[partitionIndex].isPivot = true;
+      await renderChart(arr, left, right);
+  
+      arr[partitionIndex].isPivot = false;
+      await renderChart(arr, left, right);
     }
   }
-
   await swap(arr, partitionIndex, right);
-
-
-  // await renderChart(arr,-1, -1);
-
 
   return partitionIndex;
 }
+
 
 
 const arraySize = document.querySelector('#arraySize')
 const randomBtn = document.querySelector('#randomBtn')
 const sortArr = document.querySelector('#sortArr')
 
-console.log(array);
 
 function randomize(){
   array = randomArray(arraySize.value)
@@ -123,10 +135,4 @@ function downloadStringAsFile(text, filename) {
   URL.revokeObjectURL(url);
 }
 
-
-
-
-// array = randomArray(5)
-// animateQuicksort(array, 0, array.length - 1)
-// console.log(array)
 
