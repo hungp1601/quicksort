@@ -29,7 +29,6 @@ class LinkedList {
   display () {
     let current = this.head;
     while (current) {
-      console.log(current.data);
       current = current.next;
     }
   }
@@ -63,13 +62,6 @@ class LinkedList {
   }
 }
 
-// Example usage
-const myList = new LinkedList();
-// myList.append(10);
-// myList.append(20);
-// myList.append(30);
 
-// myList.display();
 
-export class LinkedList;
-export class Node;
+export class LinkedList

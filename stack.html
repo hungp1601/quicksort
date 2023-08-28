@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<style>
+  #main {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    margin-top: 100px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ele {
+    border: 1px solid black;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pivot {
+    background: red;
+  }
+
+  .swap {
+    background: green;
+  }
+
+  .compare {
+    background: yellow;
+  }
+
+  .partition {
+    height: 40px;
+    width: 2px;
+    background: blue;
+  }
+
+  .btn-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    height: 450px;
+  }
+
+  .stack-item{
+    border: 1px solid black;
+    height: 40px;
+    width: 60px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn-wrapper>div {
+    flex:1;
+  }
+
+  #stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: center;
+    /* width: 100%; */
+    justify-content:flex-end;
+  }
+</style>
+
+<body>
+
+  <div class="btn-wrapper">
+
+    <div>
+      <div>array</div>
+      <div id="main"></div>
+
+      
+    </div>
+    <span style="border: 1px solid black; height: 450px;"></span>
+    <div>
+      <div>stack</div>
+      <div id="stack"></div>
+      
+    </div>
+
+  </div>
+
+  <div>
+    <hr>
+    <div>
+      input your file:
+    </div>
+    <input type="file" id="fileInput">
+  </div>
+
+  <div>
+    <button id="exportButton">Export this array</button>
+  </div>
+
+  <div>
+    <div>generate random array (input array size)</div>
+    <input type="text" name="" id="arraySize">
+    <button id="randomBtn">random</button>
+  </div>
+
+  <div>
+    <button id="sortArr">Sort array</button>
+  </div>
+  <script type="module" src="stackIndex.js">
+
+
+  </script>
+
+</body>
+
+</html>

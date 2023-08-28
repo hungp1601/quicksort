@@ -27,7 +27,7 @@ export function generateArray (arr) {
 }
 
 export function convertNormalArray (arr) {
-  console.log( arr )
+  // console.log( arr )
   return arr.map(item => item.value);
 }
 
