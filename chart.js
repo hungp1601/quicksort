@@ -82,9 +82,11 @@ export async function renderChart (arr, left, right) {
 
       }
   }
-
+  
   array.innerHTML = str
-
+  if(arr.length > 20 ){
+    array.innerHTML ='array is too long'
+  }
 
   await sleep();
 
@@ -97,5 +99,5 @@ export async function renderChart (arr, left, right) {
 
 
 function sleep () {
-  return new Promise(resolve => setTimeout(resolve, 2000));
+  // return new Promise(resolve => setTimeout(resolve, 2000));
 }

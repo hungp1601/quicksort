@@ -42,6 +42,17 @@ async function animateQuicksort(arr, left, right) {
   }
 }
 
+async function quicksort(arr, left, right) {
+  if (left < right) {
+    const pivotIndex = await animatePartition(arr, left, right);
+
+
+    await quicksort(arr, left, pivotIndex - 1);
+
+    await quicksort(arr, pivotIndex + 1, right);
+  }
+}
+
 async function animatePartition (arr, left, right) {
   const pivotValue = arr[right].value;
   let partitionIndex = left;
@@ -71,11 +82,43 @@ async function animatePartition (arr, left, right) {
   return partitionIndex;
 }
 
+async function animatePartition (arr, left, right) {
+  const pivotValue = arr[right].value;
+  let partitionIndex = left;
+
+
+  // await renderChart(arr, left, right);
+
+  //swap smaller than pivot to left, greater to right
+
+  for (let i = left; i < right; i++) {
+    if (arr[i].value < pivotValue) {
+      swap(arr, i, partitionIndex, left, right);
+
+      
+      partitionIndex++;
+
+      arr[partitionIndex].isPivot = true;
+  
+      arr[partitionIndex].isPivot = false;
+    }
+  }
+  arr[right].isCompare = false;
+
+  await swap(arr, partitionIndex, right);
+
+  return partitionIndex;
+}
+
 
 
 const arraySize = document.querySelector('#arraySize')
 const randomBtn = document.querySelector('#randomBtn')
 const sortArr = document.querySelector('#sortArr')
+const sortArrSync = document.querySelector('#sortArrSync')
+
+const runTime = document.querySelector('#runTime')
+
 
 
 function randomize(){
@@ -84,13 +127,26 @@ function randomize(){
   renderChart(array)
 }
 
+
+
 async function sortArray(){
+  let start = Date.now();
   await animateQuicksort(array, 0, array.length - 1)
+  let timeTaken = Date.now() - start;
+
+  runTime.innerHTML = timeTaken+ ' milliseconds'
 }
 
-randomBtn.addEventListener("click", randomize);
 
-sortArr.addEventListener("click", sortArray);
+function sortArraySync(){
+  let start = Date.now();
+  quicksort(array, 0, array.length - 1)
+  let timeTaken = Date.now() - start;
+
+  runTime.innerHTML = timeTaken+ ' milliseconds'
+}
+
+
 
 
 
@@ -141,4 +197,11 @@ function downloadStringAsFile(text, filename) {
   URL.revokeObjectURL(url);
 }
 
+
+
+randomBtn.addEventListener("click", randomize);
+
+sortArr.addEventListener("click", sortArray);
+
+sortArrSync.addEventListener("click", sortArray);
 
