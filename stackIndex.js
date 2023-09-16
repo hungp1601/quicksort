@@ -7,10 +7,16 @@ let array = [];
 const arraySize = document.querySelector('#arraySize')
 const randomBtn = document.querySelector('#randomBtn')
 const sortArr = document.querySelector('#sortArr')
+const sortArrSync = document.querySelector('#sortArrSync')
+
+const runTime = document.querySelector('#runTime')
+
 
 
 randomBtn.addEventListener("click", randomize);
 sortArr.addEventListener("click", sortArray);
+sortArrSync.addEventListener("click", sortArraySync);
+
 document.addEventListener("DOMContentLoaded", () => {
   const exportButton = document.getElementById("exportButton");
 
@@ -39,7 +45,12 @@ async function swap (arr, i, j, left, right) {
   arr[i].isSwap = false;
   arr[j].isSwap = false;
   await renderChart(arr, left, right);
+}
 
+function swapSync (arr, i, j) {
+  const temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
 }
 
 
@@ -65,6 +76,27 @@ async function animateQuicksort (arr) {
     if (pivotIndex + 1 < end) {
       stack.push([pivotIndex + 1, end]);
       await renderStack(stack)
+    }
+  }
+}
+
+
+function quicksort (arr) {
+  let stack = new Stack()
+
+  stack.push([0, arr.length - 1])
+
+  while (stack.size() > 0) {
+    const [start, end] = stack.pop()
+
+    const pivotIndex = partition(arr, start, end);
+
+    if (pivotIndex - 1 > start) {
+      stack.push([start, pivotIndex - 1]);
+    }
+
+    if (pivotIndex + 1 < end) {
+      stack.push([pivotIndex + 1, end]);
     }
   }
 }
@@ -96,16 +128,44 @@ async function animatePartition (arr, left, right) {
 }
 
 
+function partition (arr, left, right) {
+  const pivotValue = arr[right].value;
+  let partitionIndex = left;
+
+  for (let i = left; i < right; i++) {
+    if (arr[i].value < pivotValue) {
+      swapSync(arr, i, partitionIndex);
+      partitionIndex++;
+    }
+  }
+  arr[right].isCompare = false;
+
+  swapSync(arr, partitionIndex, right);
+
+  return partitionIndex;
+}
+
+
 function randomize () {
   array = randomArray(arraySize.value)
   renderChart(array)
 }
 
 async function sortArray () {
-  await animateQuicksort(array)
+  let start = Date.now();
+  animateQuicksort(array)
+  let timeTaken = Date.now() - start;
+
+  runTime.innerHTML = timeTaken + ' milliseconds'
 }
 
+function sortArraySync () {
+  let start = Date.now();
+  quicksort(array)
+  let timeTaken = Date.now() - start;
 
+  runTime.innerHTML = timeTaken + ' milliseconds'
+}
 
 
 
