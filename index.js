@@ -2,11 +2,14 @@ import { randomArray, renderChart,convertNormalArray,generateArray } from "./cha
 
 let array = [];
 
+const arraySize = document.querySelector('#arraySize')
+const randomBtn = document.querySelector('#randomBtn')
+const sortArr = document.querySelector('#sortArr')
+const sortArrSync = document.querySelector('#sortArrSync')
+const runTime = document.querySelector('#runTime')
 
 
-async function swap(arr, i, j, left, right) {
-  // if(i ===j ) return
-  // console.log(i,j);
+async function swap (arr, i, j, left, right) {
   arr[i].isSwap = true;
   arr[j].isSwap = true;
   await renderChart(arr,left, right);
@@ -20,6 +23,12 @@ async function swap(arr, i, j, left, right) {
   arr[j].isSwap = false;
   await renderChart(arr,left,right);
 
+}
+
+function swapSync (arr, i, j) {
+  const temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
 }
 
 
@@ -42,14 +51,14 @@ async function animateQuicksort(arr, left, right) {
   }
 }
 
-async function quicksort(arr, left, right) {
+function quicksort (arr, left, right) {
   if (left < right) {
-    const pivotIndex = await animatePartition(arr, left, right);
+    const pivotIndex = partition(arr, left, right);
 
 
-    await quicksort(arr, left, pivotIndex - 1);
+    quicksort(arr, left, pivotIndex - 1);
 
-    await quicksort(arr, pivotIndex + 1, right);
+    quicksort(arr, pivotIndex + 1, right);
   }
 }
 
@@ -82,43 +91,21 @@ async function animatePartition (arr, left, right) {
   return partitionIndex;
 }
 
-async function animatePartition (arr, left, right) {
+function partition (arr, left, right) {
   const pivotValue = arr[right].value;
   let partitionIndex = left;
 
-
-  // await renderChart(arr, left, right);
-
-  //swap smaller than pivot to left, greater to right
-
   for (let i = left; i < right; i++) {
     if (arr[i].value < pivotValue) {
-      swap(arr, i, partitionIndex, left, right);
-
-      
+      swapSync(arr, i, partitionIndex);
       partitionIndex++;
-
-      arr[partitionIndex].isPivot = true;
-  
-      arr[partitionIndex].isPivot = false;
     }
   }
-  arr[right].isCompare = false;
 
-  await swap(arr, partitionIndex, right);
+   swapSync(arr, partitionIndex, right);
 
   return partitionIndex;
 }
-
-
-
-const arraySize = document.querySelector('#arraySize')
-const randomBtn = document.querySelector('#randomBtn')
-const sortArr = document.querySelector('#sortArr')
-const sortArrSync = document.querySelector('#sortArrSync')
-
-const runTime = document.querySelector('#runTime')
-
 
 
 function randomize(){
@@ -144,8 +131,10 @@ function sortArraySync(){
   let timeTaken = Date.now() - start;
 
   runTime.innerHTML = timeTaken+ ' milliseconds'
-}
+  renderChart(array)
 
+
+}
 
 
 
@@ -203,5 +192,5 @@ randomBtn.addEventListener("click", randomize);
 
 sortArr.addEventListener("click", sortArray);
 
-sortArrSync.addEventListener("click", sortArray);
+sortArrSync.addEventListener("click", sortArraySync);
 
