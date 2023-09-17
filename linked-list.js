@@ -1,67 +1,82 @@
 class Node {
   constructor(data) {
     this.data = data;
+    this.prev = null;
     this.next = null;
   }
 }
 
-class LinkedList {
+export class LinkedList {
   constructor() {
     this.head = null;
+    this.tail = null;
   }
 
-  // Adding a new node to the end of the linked list
-  append (data) {
+  push(data) {
     const newNode = new Node(data);
     if (!this.head) {
       this.head = newNode;
-      return;
+      this.tail = newNode;
+    } else {
+      newNode.prev = this.tail;
+      this.tail.next = newNode;
+      this.tail = newNode;
     }
-
-    let current = this.head;
-    while (current.next) {
-      current = current.next;
-    }
-    current.next = newNode;
   }
 
-  // Printing the linked list
-  display () {
-    let current = this.head;
+  pop() {
+    if (!this.tail) {
+      return null;
+    }
+
+    const poppedData = this.tail.data;
+    if (this.head === this.tail) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      this.tail = this.tail.prev;
+      this.tail.next = null;
+    }
+
+    return poppedData;
+  }
+
+  isEmpty() {
+    return !this.head;
+  }
+
+}
+
+
+const stack = document.querySelector('#stack');
+
+
+export async function renderStack (st) {
+  // console.log(st.items[0])
+  let str = ''
+
+    let current = st.head;
     while (current) {
+      str += `
+      <div class='stack-item'>
+        ${current.data[0]+1} ->  ${current.data[1]+1}
+      </div>
+      `
+
       current = current.next;
-    }
   }
 
-  getLast () {
-    let current = this.head;
-    while (current && current.next) {
-      current = current.next;
-    }
-    return current ? current.data : null;
-  }
+  stack.innerHTML = str
 
-  // Removing the last node from the linked list
-  removeLast () {
-    if (!this.head) {
-      return; // Empty list
-    }
 
-    if (!this.head.next) {
-      this.head = null; // Only one node in the list
-      return;
-    }
-
-    let prev = null;
-    let current = this.head;
-    while (current.next) {
-      prev = current;
-      current = current.next;
-    }
-    prev.next = null; // Remove the reference to the last node
-  }
+  await sleep();
 }
 
 
 
-export class LinkedList
+function sleep () {
+  return new Promise(resolve => setTimeout(resolve, 2000));
+}
+
+
+
