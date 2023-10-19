@@ -7,14 +7,17 @@ export function randomArray (arraySize, maxValue = 20) {
   let tmp = [];
   for (let i = 0; i < arraySize; i++) {
     const index = i + 1;
-    const value = Math.floor(Math.random() * maxValue) + 1
+    const value = Math.floor(Math.random() * maxValue) + 1  // random function in js
 
 
     tmp.push({ index, value, isPivot: false, isSwap: false, isCompare:false  });
   }
+  console.log(tmp)
+
   return tmp;
 }
 
+//map normal array to array can render chart
 export function generateArray (arr) {
   let tmp = [];
   for (let i = 0; i < arr.length; i++) {
@@ -92,7 +95,6 @@ export async function renderChart (arr, left, right) {
 
 
   operation++;
-  console.log(operation)
 
 }
 
