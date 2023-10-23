@@ -1,4 +1,3 @@
-let operation = 0;
 
 const array = document.querySelector('#main');
 
@@ -37,7 +36,8 @@ export function convertNormalArray (arr) {
 
 export async function renderChart (arr, left, right) {
 
-  let str = ''
+  if (arr.length <= 20) {
+    let str = ''
 
   for(let i = 0; i < arr.length; i++) {
     if(left===i){
@@ -87,14 +87,14 @@ export async function renderChart (arr, left, right) {
   }
   
   array.innerHTML = str
-  if(arr.length > 20 ){
+  }
+  else {
     array.innerHTML ='array is too long'
   }
 
   await sleep();
 
 
-  operation++;
 
 }
 
