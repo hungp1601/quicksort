@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fileInput.addEventListener("change", event => {
     const file = event.target.files[0];
+    
     if (file) {
       const reader = new FileReader();
 
@@ -66,6 +67,8 @@ function randomize(){
 async function sortArrayAsync(){
   let start = Date.now();
   await quicksortAsync(array, 0, array.length - 1)
+  // await quicksortAsync(array, 0, array.length - 1, (a,b) => b.value-a.value)
+
   let timeTaken = Date.now() - start;
 
   runTime.innerHTML = timeTaken+ ' milliseconds'

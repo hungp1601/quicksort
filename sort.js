@@ -58,6 +58,7 @@ export async function partitionAsync (arr, left, right, comparator = (a, b) => a
 
   for (let i = left; i < right; i++) {
     if (comparator(arr[i], arr[right]) < 0) {
+      //a.value -b.value <0 == a.value < b.value
       await swapAsync(arr, i, partitionIndex, left, right);
       partitionIndex++;
 

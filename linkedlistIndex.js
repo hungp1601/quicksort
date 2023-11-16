@@ -1,7 +1,8 @@
 import { randomArray, renderChart, convertNormalArray, generateArray } from "./chart.js";
 
 import { LinkedList,renderStack } from "./linked-list.js";
-import { partition, partitionAsync } from "./sort.js";
+import { partition, partitionAsync, quicksort } from "./sort.js";
+import { Stack } from "./stack.js";
 
 
 
@@ -12,8 +13,11 @@ const randomBtn = document.querySelector('#randomBtn')
 const sortArr = document.querySelector('#sortArr')
 const sortArrSync = document.querySelector('#sortArrSync')
 const runTime = document.querySelector('#runTime')
+const select = document.querySelector('#select')
 
 //file handler 
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const exportButton = document.getElementById("exportButton");
@@ -84,7 +88,7 @@ async function animateQuicksort (arr, comparator = (a, b) => a.value - b.value) 
 }
 
 
-function quicksort (arr, comparator = (a, b) => a.value - b.value) {
+function quicksortLinkedlist (arr, comparator = (a, b) => a.value - b.value) {
   let stack = new LinkedList()
 
   stack.push([0, arr.length - 1])
@@ -111,18 +115,65 @@ function randomize () {
 
 async function sortArray () {
   let start = Date.now();
+ 
   animateQuicksort(array)
   let timeTaken = Date.now() - start;
 
   runTime.innerHTML = timeTaken + ' milliseconds'
 }
 
+
+function quicksortStack (arr, comparator = (a, b) => a.value - b.value) {
+  let stack = new Stack()
+
+  stack.push([0, arr.length - 1])
+
+  while (stack.size() > 0) {
+    const [start, end] = stack.pop()
+
+    const pivotIndex = partition(arr, start, end, comparator);
+
+    // push top if the left partition's size is greater than 1  
+    if (pivotIndex - 1 > start) {
+      stack.push([start, pivotIndex - 1]);
+    }
+    // push top if the right partition's size is greater than 1  
+    if (pivotIndex + 1 < end) {
+      stack.push([pivotIndex + 1, end]);
+    }
+  }
+}
+
+
+
 function sortArraySync () {
   let start = Date.now();
-  quicksort(array)
+
+  let value = select.value
+
+  if(value === 'stack'){
+    quicksortStack(array)
+    console.log('using stack')
+
+  }
+  else if( value === 'linkedList'){
+    quicksortLinkedlist(array)
+    console.log('using linkedList')
+
+
+
+  }
+  else if(value === 'array'){
+    quicksort(array,0, array.length-1)
+    console.log('using array')
+
+  }
   let timeTaken = Date.now() - start;
 
-  runTime.innerHTML = timeTaken + ' milliseconds'
+  if (timeTaken >= 1000)
+    runTime.innerHTML = timeTaken/1000 + 'seconds'
+  else
+    runTime.innerHTML = timeTaken + ' milliseconds'
 }
 
 

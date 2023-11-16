@@ -2,7 +2,7 @@
 const array = document.querySelector('#main');
 
 
-export function randomArray (arraySize, maxValue = 20) {
+export function randomArray (arraySize, maxValue = 1000) {
   let tmp = [];
   for (let i = 0; i < arraySize; i++) {
     const index = i + 1;
